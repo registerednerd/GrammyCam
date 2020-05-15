@@ -37,6 +37,19 @@ def showError(error, callback):
 #=========================================
 # Button Commands
 def setButtonCommands():
+    global one
+    global two
+    global three
+    global four
+    global five
+    global six
+    global seven
+    global eight
+    global nine
+    global zero
+    global cancel
+    global backspace
+    
     one["command"] = lambda: enterDigit('1')
     two["command"] = lambda: enterDigit('2')
     three["command"] = lambda: enterDigit('3')
@@ -47,7 +60,7 @@ def setButtonCommands():
     eight["command"] = lambda: enterDigit('8')
     nine["command"] = lambda: enterDigit('9')
     zero["command"] = lambda: enterDigit('0')
-    cancel["command"] = cancel
+    cancel["command"] = cancelPin
     backspace["command"] = backspace
     
 def openPin():
@@ -233,9 +246,9 @@ def checkPin():
         pinWindow.destroy()
         openSettings()
     else:
-        cancel()
+        cancelPin()
         
-def cancel():
+def cancelPin():
     global pinWindow
     global entry
     entry = ""
