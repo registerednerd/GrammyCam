@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import tkinter as tk
 import cec
 import subprocess
@@ -11,11 +13,16 @@ green = "#61E786"
 purple = "#9D8DF1"
 largeFont = "Oswald 36 bold"
 
+print("UI Elements Established")
+
 # Initialize CEC
 cec.init()
+print("CEC Initialized")
 
 # Rotate Camera
 subprocess.Popen("v4l2-ctl --set-ctrl=rotate=90", shell = True)
+print("Camera Rotated")
+
 #=========================================
 #             ERROR DISPLAY
 #=========================================
@@ -31,6 +38,9 @@ def showError(error, callback):
                          text = "OK",
                          bg = red)
     okButton.pack(side = tk.BOTTOM)
+    errorWindow.mainloop()
+    
+print("End of Error Display definition")
     
 #=========================================
 #                PIN LOCK
@@ -247,6 +257,7 @@ def openPin():
                 fill = tk.BOTH)
     
     setButtonCommands()
+    pinWindow.mainloop()
 
 entry = ""
 pin = "1234"
@@ -296,6 +307,81 @@ def cancelPin():
     entry = ""
     pinWindow.destroy()
 
+print("End of PIN Entry definition")
+    
+#=========================================
+#           SETTINGS WINDOW
+#=========================================
+
+def openSettings():
+    global settingsWindow
+    global brightnessSlider
+    settingsWindow = tk.Tk()
+    settingsWindow.attributes("-fullscreen", True)
+    settingsWindow.configure(bg = "black")
+
+    brightnessSlider = tk.Scale(settingsWindow,
+                                from_=5,
+                                to = 100,
+                                orient = tk.HORIZONTAL,
+                                fg = blue,
+                                command = changeBrightness)
+    brightnessSlider.pack()
+    brightnessSlider.set(Backlight().brightness)
+    
+    powerFrame = tk.Frame(settingsWindow,
+                          bg = "black")
+    powerFrame.pack(side = tk.RIGHT,
+                    fill = tk.BOTH)
+    rebootBtn = tk.Button(powerFrame,
+                          text = "Reboot",
+                          bg = red,
+                          relief = tk.FLAT,
+                          font = largeFont,
+                          command = reboot)
+    rebootBtn.pack(side = tk.BOTTOM,
+                   fill = tk.BOTH,
+                   expand = 1)
+    shutDownBtn = tk.Button(powerFrame,
+                            text = "Shut Down",
+                            bg = red,
+                            relief = tk.FLAT,
+                            font = largeFont,
+                            command = shutDown)
+    shutDownBtn.pack(side = tk.BOTTOM,
+                     fill = tk.BOTH,
+                     expand = 1)
+    quitBtn = tk.Button(powerFrame,
+                        text = "Quit",
+                        bg = red,
+                        relief = tk.FLAT,
+                        font = largeFont,
+                        command = close)
+    quitBtn.pack(side = tk.BOTTOM,
+                 fill = tk.BOTH,
+                 expand = 1)
+    
+    settingsWindow.mainloop()
+
+def changeBrightness(event):
+    brightness = brightnessSlider.get()
+    Backlight().brightness = brightness
+        
+def close():
+    settingsWindow.destroy()
+    tp.destroy()
+
+def back():
+    settingsWindow.desroy()
+    
+def shutDown():
+    subprocess.Popen("sudo poweroff", shell = True)
+    
+def reboot():
+    subprocess.Popen("sudo reboot", shell = True)
+    
+print("End of Settings Window definition")
+
 #=========================================
 #             MAIN TP WINDOW
 #=========================================
@@ -307,8 +393,7 @@ tp.title = "Main TP"
 # Button Functions
 def joinCall():
     url = "http://meet.jit.si/GrammyCam"
-    subprocess.Popen("echo 'as' | cec-client RPI -s -d 1",
-                     shell = True)
+    #subprocess.Popen("echo 'as' | cec-client RPI -s -d 1", shell = True)
     global callWindow
     callWindow = subprocess.Popen(["chromium-browser",
                                  "--kiosk",
@@ -326,12 +411,12 @@ def endCall():
     joinBtn["command"] = joinCall
         
 def volumeUp():
-    subprocess.Popen("echo 'volup' | cec-client RPI -s -d 1",
-                     shell = True)
+    subprocess.Popen("echo 'volup' | cec-client RPI -s -d 1", shell = True)
+    print("Volume Up")
 
 def volumeDown():
-    subprocess.Popen("echo 'voldown' | cec-client RPI -s -d 1",
-                     shell = True)
+    subprocess.Popen("echo 'voldown' | cec-client RPI -s -d 1", shell = True)
+    print("Volume Down")
     
 # tk buttons
 pad = 10
@@ -385,72 +470,7 @@ settingsBtn.pack(side = tk.TOP,
                  fill = tk.BOTH,
                  padx = pad,
                  pady = pad)
-    
-#=========================================
-#           SETTINGS WINDOW
-#=========================================
 
-def openSettings():
-    global settingsWindow
-    global brightnessSlider
-    settingsWindow = tk.Tk()
-    settingsWindow.attributes("-fullscreen", True)
-    settingsWindow.configure(bg = "black")
+tp.mainloop()
 
-    brightnessSlider = tk.Scale(settingsWindow,
-                                from_=5,
-                                to = 100,
-                                orient = tk.HORIZONTAL,
-                                fg = blue,
-                                command = changeBrightness)
-    brightnessSlider.pack()
-    brightnessSlider.set(Backlight().brightness)
-    
-    powerFrame = tk.Frame(settingsWindow,
-                          bg = "black")
-    powerFrame.pack(side = tk.RIGHT,
-                    fill = tk.BOTH)
-    rebootBtn = tk.Button(powerFrame,
-                          text = "Reboot",
-                          bg = red,
-                          relief = tk.FLAT,
-                          font = largeFont,
-                          command = reboot)
-    rebootBtn.pack(side = tk.BOTTOM,
-                   fill = tk.BOTH,
-                   expand = 1)
-    shutDownBtn = tk.Button(powerFrame,
-                            text = "Shut Down",
-                            bg = red,
-                            relief = tk.FLAT,
-                            font = largeFont,
-                            command = shutDown)
-    shutDownBtn.pack(side = tk.BOTTOM,
-                     fill = tk.BOTH,
-                     expand = 1)
-    quitBtn = tk.Button(powerFrame,
-                        text = "Quit",
-                        bg = red,
-                        relief = tk.FLAT,
-                        font = largeFont,
-                        command = close)
-    quitBtn.pack(side = tk.BOTTOM,
-                 fill = tk.BOTH,
-                 expand = 1)
-
-def changeBrightness(event):
-    brightness = brightnessSlider.get()
-    Backlight().brightness = brightness
-        
-def close():
-    settingsWindow.destroy()
-    tp.destroy()
-
-def back():
-    settingsWindow.desroy()
-    
-def shutDown():
-    subprocess.Popen("sudo poweroff", shell = True)
-    
-def reboot():
-    subprocess.Popen("sudo reboot", shell = True)
+print("End of Main Window definition")
