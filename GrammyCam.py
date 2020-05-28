@@ -11,7 +11,11 @@ red = "#BD9391"
 blue = "#A2C7E5"
 green = "#61E786"
 purple = "#9D8DF1"
-largeFont = "Oswald 36 bold"
+largeFont = "Oswald 36"
+largeFontBold = "Oswald 36 bold"
+mediumFont = "Oswald 20"
+mediumFontBold = "Oswald 20 bold"
+smallFont = "Lato 14"
 
 print("UI Elements Established")
 
@@ -86,26 +90,13 @@ def openPin():
     display.pack(side = tk.TOP,
                  expand = 1,
                  fill = tk.BOTH)
-    row1 = tk.Frame(pinWindow,
-                    bg = "black")
-    row1.pack(side = tk.TOP,
-              expand = 1,
-              fill = tk.BOTH)
-    row2 = tk.Frame(pinWindow,
-                    bg = "black")
-    row2.pack(side = tk.TOP,
-              expand = 1,
-              fill = tk.BOTH)
-    row3 = tk.Frame(pinWindow,
-                    bg = "black")
-    row3.pack(side = tk.TOP,
-              expand = 1,
-              fill = tk.BOTH)
-    row4 = tk.Frame(pinWindow,
-                    bg = "black")
-    row4.pack(side = tk.TOP,
-              expand = 1,
-              fill = tk.BOTH)
+    keypad = tk.Frame(pinWindow,
+                     bg = "black")
+    keypad.pack(side = tk.TOP,
+                expand = 1,
+                fill = tk.BOTH)
+    keypad.columnconfigure((0, 1, 2), weight = 1)
+    keypad.rowconfigure((0, 1, 2, 3), weight = 1)
 
     # Buttons
     global one
@@ -120,102 +111,102 @@ def openPin():
     global zero
     global cancel
     global backspace
-    one = tk.Button(row1,
+    one = tk.Button(keypad,
                     bg = blue,
                     fg = "white",
                     font = largeFont,
                     text = "1")
-    one.pack(side = tk.LEFT,
-             expand = 1,
-             fill = tk.BOTH)
-    two = tk.Button(row1,
+    one.grid(row = 0,
+             column = 0,
+             sticky = (tk.N, tk.S, tk.E, tk.W))
+    two = tk.Button(keypad,
                     bg = blue,
                     fg = "white",
                     font = largeFont,
                     text = "2")
-    two.pack(side = tk.LEFT,
-             expand = 1,
-             fill = tk.BOTH)
-    three = tk.Button(row1,
+    two.grid(row = 0,
+             column = 1,
+             sticky = (tk.N, tk.S, tk.E, tk.W))
+    three = tk.Button(keypad,
                     bg = blue,
                     fg = "white",
                     font = largeFont,
                     text = "3")
-    three.pack(side = tk.LEFT,
-               expand = 1,
-               fill = tk.BOTH)
-    four = tk.Button(row2,
+    three.grid(row = 0,
+             column = 2,
+             sticky = (tk.N, tk.S, tk.E, tk.W))
+    four = tk.Button(keypad,
                     bg = blue,
                     fg = "white",
                     font = largeFont,
                     text = "4")
-    four.pack(side = tk.LEFT,
-              expand = 1,
-              fill = tk.BOTH)
-    five = tk.Button(row2,
+    four.grid(row = 1,
+             column = 0,
+             sticky = (tk.N, tk.S, tk.E, tk.W))
+    five = tk.Button(keypad,
                     bg = blue,
                     fg = "white",
                     font = largeFont,
                     text = "5")
-    five.pack(side = tk.LEFT,
-              expand = 1,
-              fill = tk.BOTH)
-    six = tk.Button(row2,
+    five.grid(row = 1,
+             column = 1,
+             sticky = (tk.N, tk.S, tk.E, tk.W))
+    six = tk.Button(keypad,
                     bg = blue,
                     fg = "white",
                     font = largeFont,
                     text = "6")
-    six.pack(side = tk.LEFT,
-             expand = 1,
-             fill = tk.BOTH)
-    seven = tk.Button(row3,
+    six.grid(row = 1,
+             column = 2,
+             sticky = (tk.N, tk.S, tk.E, tk.W))
+    seven = tk.Button(keypad,
                     bg = blue,
                     fg = "white",
                     font = largeFont,
                     text = "7")
-    seven.pack(side = tk.LEFT,
-               expand = 1,
-               fill = tk.BOTH)
-    eight = tk.Button(row3,
+    seven.grid(row = 2,
+             column = 0,
+             sticky = (tk.N, tk.S, tk.E, tk.W))
+    eight = tk.Button(keypad,
                     bg = blue,
                     fg = "white",
                     font = largeFont,
                     text = "8")
-    eight.pack(side = tk.LEFT,
-               expand = 1,
-               fill = tk.BOTH)
-    nine = tk.Button(row3,
+    eight.grid(row = 2,
+             column = 1,
+             sticky = (tk.N, tk.S, tk.E, tk.W))
+    nine = tk.Button(keypad,
                     bg = blue,
                     fg = "white",
                     font = largeFont,
                     text = "9")
-    nine.pack(side = tk.LEFT,
-              expand = 1,
-              fill = tk.BOTH)
-    cancel = tk.Button(row4,
+    nine.grid(row = 2,
+             column = 2,
+             sticky = (tk.N, tk.S, tk.E, tk.W))
+    cancel = tk.Button(keypad,
                     bg = red,
                     fg = "white",
                     font = largeFont,
                     text = "Cancel")
-    cancel.pack(side = tk.LEFT,
-                expand = 1,
-                fill = tk.BOTH)
-    zero = tk.Button(row4,
+    cancel.grid(row = 3,
+             column = 0,
+             sticky = (tk.N, tk.S, tk.E, tk.W))
+    zero = tk.Button(keypad,
                     bg = blue,
                     fg = "white",
                     font = largeFont,
                     text = "0")
-    zero.pack(side = tk.LEFT,
-              expand = 1,
-              fill = tk.BOTH)
-    backspace = tk.Button(row4,
+    zero.grid(row = 3,
+             column = 1,
+             sticky = (tk.N, tk.S, tk.E, tk.W))
+    backspace = tk.Button(keypad,
                     bg = blue,
                     fg = "white",
                     font = largeFont,
                     text = "<")
-    backspace.pack(side = tk.LEFT,
-                   expand = 1,
-                   fill = tk.BOTH)
+    backspace.grid(row = 3,
+             column = 2,
+             sticky = (tk.N, tk.S, tk.E, tk.W))
 
     # Display Places
     global digit1
@@ -297,6 +288,7 @@ def checkPin():
     global pin
     if entry == pin:
         pinWindow.destroy()
+        entry = ""
         openSettings()
     else:
         cancelPin()
@@ -399,6 +391,7 @@ def joinCall():
                                  "--kiosk",
                                  url])
     joinBtn["bg"] = red
+    joinBtn["activebackground"] = red
     joinBtn["text"] = "Leave\nRoom"
     joinBtn["command"] = endCall
     
@@ -407,6 +400,7 @@ def endCall():
     global callWindow
     callWindow.terminate()
     joinBtn["bg"] = green
+    joinBtn["activebackground"] = green
     joinBtn["text"] = "Join\nRoom"
     joinBtn["command"] = joinCall
         
@@ -423,6 +417,8 @@ pad = 10
 joinBtn = tk.Button(tp,
                     text = "Join\nRoom",
                     bg = green,
+                    activebackground = green,
+                    activeforeground = "white",
                     fg = "white",
                     relief = tk.FLAT,
                     font = largeFont,
@@ -438,6 +434,8 @@ sideFrame.pack(side = tk.RIGHT,
 volUpBtn = tk.Button(sideFrame,
                      text = "Volume +",
                      bg = blue,
+                     activebackground = blue,
+                     activeforeground = "white",
                      fg = "white",
                      relief = tk.FLAT,
                      font = largeFont,
@@ -450,6 +448,8 @@ volUpBtn.pack(side = tk.TOP,
 volDownBtn = tk.Button(sideFrame,
                        text = "Volume -",
                        bg = blue,
+                       activebackground = blue,
+                    activeforeground = "white",
                        fg = "white",
                        relief = tk.FLAT,
                        font = largeFont,
@@ -462,6 +462,8 @@ volDownBtn.pack(side = tk.TOP,
 settingsBtn = tk.Button(sideFrame,
                         text = "Settings",
                         bg = purple,
+                        activebackground = purple,
+                    activeforeground = "white",
                         fg = "white",
                         relief = tk.FLAT,
                         font = largeFont,
