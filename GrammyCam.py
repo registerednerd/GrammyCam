@@ -113,7 +113,7 @@ def openPin():
     global backspace
     one = tk.Button(keypad,
                     bg = blue,
-                    fg = "white",
+                    fg = "black",
                     font = largeFont,
                     text = "1")
     one.grid(row = 0,
@@ -121,7 +121,7 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     two = tk.Button(keypad,
                     bg = blue,
-                    fg = "white",
+                    fg = "black",
                     font = largeFont,
                     text = "2")
     two.grid(row = 0,
@@ -129,7 +129,7 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     three = tk.Button(keypad,
                     bg = blue,
-                    fg = "white",
+                    fg = "black",
                     font = largeFont,
                     text = "3")
     three.grid(row = 0,
@@ -137,7 +137,7 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     four = tk.Button(keypad,
                     bg = blue,
-                    fg = "white",
+                    fg = "black",
                     font = largeFont,
                     text = "4")
     four.grid(row = 1,
@@ -145,7 +145,7 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     five = tk.Button(keypad,
                     bg = blue,
-                    fg = "white",
+                    fg = "black",
                     font = largeFont,
                     text = "5")
     five.grid(row = 1,
@@ -153,7 +153,7 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     six = tk.Button(keypad,
                     bg = blue,
-                    fg = "white",
+                    fg = "black",
                     font = largeFont,
                     text = "6")
     six.grid(row = 1,
@@ -161,7 +161,7 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     seven = tk.Button(keypad,
                     bg = blue,
-                    fg = "white",
+                    fg = "black",
                     font = largeFont,
                     text = "7")
     seven.grid(row = 2,
@@ -169,7 +169,7 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     eight = tk.Button(keypad,
                     bg = blue,
-                    fg = "white",
+                    fg = "black",
                     font = largeFont,
                     text = "8")
     eight.grid(row = 2,
@@ -177,7 +177,7 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     nine = tk.Button(keypad,
                     bg = blue,
-                    fg = "white",
+                    fg = "black",
                     font = largeFont,
                     text = "9")
     nine.grid(row = 2,
@@ -185,7 +185,7 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     cancel = tk.Button(keypad,
                     bg = red,
-                    fg = "white",
+                    fg = "black",
                     font = largeFont,
                     text = "Cancel")
     cancel.grid(row = 3,
@@ -193,7 +193,7 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     zero = tk.Button(keypad,
                     bg = blue,
-                    fg = "white",
+                    fg = "black",
                     font = largeFont,
                     text = "0")
     zero.grid(row = 3,
@@ -201,7 +201,7 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     backspace = tk.Button(keypad,
                     bg = blue,
-                    fg = "white",
+                    fg = "black",
                     font = largeFont,
                     text = "<")
     backspace.grid(row = 3,
@@ -298,8 +298,6 @@ def cancelPin():
     global entry
     entry = ""
     pinWindow.destroy()
-
-print("End of PIN Entry definition")
     
 #=========================================
 #           SETTINGS WINDOW
@@ -325,6 +323,14 @@ def openSettings():
                           bg = "black")
     powerFrame.pack(side = tk.RIGHT,
                     fill = tk.BOTH)
+    updateBtn = tk.Button(powerFrame,
+                          text = "Update",
+                          bg = purple,
+                          relief = tk.FLAT,
+                          font = largeFont,
+                          command = update)
+    updateBtn.pack(side = tk.TOP,
+                   fill = tk.BOTH)
     rebootBtn = tk.Button(powerFrame,
                           text = "Reboot",
                           bg = red,
@@ -358,6 +364,10 @@ def openSettings():
 def changeBrightness(event):
     brightness = brightnessSlider.get()
     Backlight().brightness = brightness
+    
+def update():
+    subprocess.Popen("~/GrammyCam/Update", shell = True)
+    close()
         
 def close():
     settingsWindow.destroy()
@@ -372,8 +382,6 @@ def shutDown():
 def reboot():
     subprocess.Popen("sudo reboot", shell = True)
     
-print("End of Settings Window definition")
-
 #=========================================
 #             MAIN TP WINDOW
 #=========================================
@@ -474,5 +482,3 @@ settingsBtn.pack(side = tk.TOP,
                  pady = pad)
 
 tp.mainloop()
-
-print("End of Main Window definition")
