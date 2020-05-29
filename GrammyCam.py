@@ -3,6 +3,7 @@
 import tkinter as tk
 import cec
 import subprocess
+import sys
 from rpi_backlight import Backlight
 
 # UI Colors
@@ -75,8 +76,6 @@ def setButtonCommands():
     eight["command"] = lambda: enterDigit('8')
     nine["command"] = lambda: enterDigit('9')
     zero["command"] = lambda: enterDigit('0')
-    cancel["command"] = cancelPin
-    backspace["command"] = backspace
     
 def openPin():
     # PIN Window
@@ -114,6 +113,7 @@ def openPin():
     global backspace
     one = tk.Button(keypad,
                     bg = blue,
+                    activebackground = blue,
                     fg = "black",
                     font = largeFont,
                     text = "1")
@@ -122,6 +122,7 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     two = tk.Button(keypad,
                     bg = blue,
+                    activebackground = blue,
                     fg = "black",
                     font = largeFont,
                     text = "2")
@@ -130,6 +131,7 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     three = tk.Button(keypad,
                     bg = blue,
+                      activebackground = blue,
                     fg = "black",
                     font = largeFont,
                     text = "3")
@@ -138,6 +140,7 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     four = tk.Button(keypad,
                     bg = blue,
+                    activebackground = blue,
                     fg = "black",
                     font = largeFont,
                     text = "4")
@@ -146,6 +149,7 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     five = tk.Button(keypad,
                     bg = blue,
+                    activebackground = blue,
                     fg = "black",
                     font = largeFont,
                     text = "5")
@@ -154,6 +158,7 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     six = tk.Button(keypad,
                     bg = blue,
+                    activebackground = blue,
                     fg = "black",
                     font = largeFont,
                     text = "6")
@@ -162,6 +167,7 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     seven = tk.Button(keypad,
                     bg = blue,
+                    activebackground = blue,
                     fg = "black",
                     font = largeFont,
                     text = "7")
@@ -170,6 +176,7 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     eight = tk.Button(keypad,
                     bg = blue,
+                    activebackground = blue,
                     fg = "black",
                     font = largeFont,
                     text = "8")
@@ -178,6 +185,7 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     nine = tk.Button(keypad,
                     bg = blue,
+                    activebackground = blue,
                     fg = "black",
                     font = largeFont,
                     text = "9")
@@ -186,14 +194,17 @@ def openPin():
              sticky = (tk.N, tk.S, tk.E, tk.W))
     cancel = tk.Button(keypad,
                     bg = red,
+                    activebackground = red,
                     fg = "black",
                     font = largeFont,
-                    text = "X")
+                    text = "X",
+                    command = cancelPin)
     cancel.grid(row = 3,
              column = 0,
              sticky = (tk.N, tk.S, tk.E, tk.W))
     zero = tk.Button(keypad,
                     bg = blue,
+                    activebackground = blue,
                     fg = "black",
                     font = largeFont,
                     text = "0")
@@ -201,10 +212,12 @@ def openPin():
              column = 1,
              sticky = (tk.N, tk.S, tk.E, tk.W))
     backspace = tk.Button(keypad,
-                    bg = blue,
+                    bg = purple,
+                    activebackground = purple,
                     fg = "black",
                     font = largeFont,
-                    text = "<")
+                    text = "<",
+                    command = backspace)
     backspace.grid(row = 3,
              column = 2,
              sticky = (tk.N, tk.S, tk.E, tk.W))
@@ -307,6 +320,9 @@ def cancelPin():
 def openSettings():
     global settingsWindow
     global brightnessSlider
+    global roomIdString
+    global roomId
+    global urlLabel
     settingsWindow = tk.Tk()
     settingsWindow.attributes("-fullscreen", True)
     settingsWindow.configure(bg = "black")
@@ -341,9 +357,46 @@ def openSettings():
                           padx = 10,
                           sticky = "NSEW")
     
+    roomLabel = tk.Label(settingsWindow,
+                         font = mediumFontBold,
+                         fg = "white",
+                         bg = "black",
+                         text = "Room ID")
+    roomLabel.grid(row = 4,
+                   column = 0)
+    roomIdString = tk.StringVar()
+    roomId = tk.Entry(settingsWindow,
+                      font = mediumFontBold,
+                      textvariable = roomIdString)
+    roomId.grid(row = 4,
+                column = 1,
+                sticky = "EW",
+                padx = 10)
+    
+    urlLabel = tk.Label(settingsWindow,
+                        bg = "black",
+                        fg = "white",
+                        font = smallFont)
+    urlLabel.grid(row = 6,
+                  column = 0,
+                  columnspan = 2)
+    updateRoomId()
+    
+    setBtn = tk.Button(settingsWindow,
+                          text = "Set",
+                          bg = green,
+                          activebackground = green,
+                          fg = "black",
+                          relief = tk.FLAT,
+                          font = mediumFont,
+                          command = setRoomId)
+    setBtn.grid(row = 5,
+                column = 1)
+    
     backBtn = tk.Button(settingsWindow,
-                        text = " Back",
+                        text = "Back",
                         bg = green,
+                        activebackground = green,
                         relief = tk.FLAT,
                         font = mediumFont,
                         command = back)
@@ -354,6 +407,7 @@ def openSettings():
     updateBtn = tk.Button(settingsWindow,
                           text = "Update",
                           bg = purple,
+                          activebackground = purple,
                           relief = tk.FLAT,
                           font = largeFont,
                           command = update)
@@ -364,6 +418,7 @@ def openSettings():
     rebootBtn = tk.Button(settingsWindow,
                           text = "Reboot",
                           bg = red,
+                          activebackground = red,
                           relief = tk.FLAT,
                           font = largeFont,
                           command = reboot)
@@ -374,6 +429,7 @@ def openSettings():
     shutDownBtn = tk.Button(settingsWindow,
                             text = "Shut Down",
                             bg = red,
+                            activebackground = red,
                             relief = tk.FLAT,
                             font = largeFont,
                             command = shutDown)
@@ -384,6 +440,7 @@ def openSettings():
     quitBtn = tk.Button(settingsWindow,
                         text = "Quit",
                         bg = red,
+                        activebackground = red,
                         relief = tk.FLAT,
                         font = largeFont,
                         command = close)
@@ -397,6 +454,26 @@ def openSettings():
 def changeBrightness(event):
     brightness = brightnessSlider.get()
     Backlight().brightness = brightness
+    
+    
+def updateRoomId():
+    global roomIdString
+    global urlLabel
+    roomFile = open("roomId", "r")
+    url = roomFile.readline()
+    roomFile.close()
+    roomName = url.lstrip("https://meet.jit.si/")
+    print("Room Name: " + roomName)
+    print("URL: " + url)
+    roomIdString.set(roomName)
+    urlLabel["text"] = ("Invite people to: " + url)
+    
+def setRoomId():
+    global roomId
+    roomFile = open("roomId", "w")
+    roomFile.write("https://meet.jit.si/" + roomId.get())
+    roomFile.close()
+    updateRoomId()
     
 def update():
     subprocess.Popen("~/GrammyCam/Update", shell = True)
@@ -429,7 +506,9 @@ tp.rowconfigure((0, 1, 2), weight = 3)
 
 # Button Functions
 def joinCall():
-    url = "http://meet.jit.si/GrammyCam"
+    roomFile = open("roomId", "r")
+    url = roomFile.readline()
+    roomFile.close()
     #subprocess.Popen("echo 'as' | cec-client RPI -s -d 1", shell = True)
     global callWindow
     callWindow = subprocess.Popen(["chromium-browser",
@@ -475,8 +554,22 @@ joinBtn.grid(row = 1,
              padx = pad,
              pady = pad)
 
+volUpImg = tk.PhotoImage(file = "./images/VolUp.png")
+volDownImg = tk.PhotoImage(file = "./images/VolDown.png")
+settingsImg = tk.PhotoImage(file = "./images/Settings.png")
+logo = tk.PhotoImage(file = "./images/Wide.png").subsample(2, 2)
+
+logoPane = tk.Label(tp,
+                    image = logo,
+                    bg = "black",
+                    bd = 0,
+                    highlightthickness = 0)
+logoPane.grid(row = 0,
+              column = 0,
+              sticky = "NS")
+
 volUpBtn = tk.Button(tp,
-                     text = "Volume +",
+                     image = volUpImg,
                      bg = blue,
                      activebackground = blue,
                      activeforeground = "white",
@@ -491,10 +584,10 @@ volUpBtn.grid(row = 0,
               pady = pad)
 
 volDownBtn = tk.Button(tp,
-                       text = "Volume -",
+                       image = volDownImg,
                        bg = blue,
                        activebackground = blue,
-                    activeforeground = "white",
+                       activeforeground = "white",
                        fg = "white",
                        relief = tk.FLAT,
                        font = largeFont,
@@ -506,7 +599,7 @@ volDownBtn.grid(row = 1,
                 pady = pad)
 
 settingsBtn = tk.Button(tp,
-                        text = "Settings",
+                        image = settingsImg,
                         bg = purple,
                         activebackground = purple,
                     activeforeground = "white",
