@@ -22,8 +22,6 @@ print("UI Elements Established")
 
 # Initialize CEC
 cec.init()
-tv = cec.Device(cec.CECDEVICE_TV)
-print("CEC Initialized")
 
 # Rotate Camera
 subprocess.Popen("v4l2-ctl --set-ctrl=rotate=90", shell = True)
@@ -459,7 +457,7 @@ def changeBrightness(event):
 def updateRoomId():
     global roomIdString
     global urlLabel
-    roomFile = open("roomId", "r")
+    roomFile = open("/home/pi/GrammyCam/roomId", "r")
     url = roomFile.readline()
     roomFile.close()
     roomName = url.lstrip("https://meet.jit.si/")
@@ -470,13 +468,13 @@ def updateRoomId():
     
 def setRoomId():
     global roomId
-    roomFile = open("roomId", "w")
+    roomFile = open("/home/pi/GrammyCam/roomId", "w")
     roomFile.write("https://meet.jit.si/" + roomId.get())
     roomFile.close()
     updateRoomId()
     
 def update():
-    subprocess.Popen("~/GrammyCam/Update", shell = True)
+    subprocess.Popen("/home/pi/GrammyCam/Update", shell = True)
     close()
         
 def close():
@@ -506,10 +504,11 @@ tp.rowconfigure((0, 1, 2), weight = 3)
 
 # Button Functions
 def joinCall():
-    roomFile = open("roomId", "r")
+    roomFile = open("/home/pi/GrammyCam/roomId", "r")
     url = roomFile.readline()
     roomFile.close()
     #subprocess.Popen("echo 'as' | cec-client RPI -s -d 1", shell = True)
+    cec.set_active_source()
     global callWindow
     callWindow = subprocess.Popen(["chromium-browser",
                                  "--kiosk",
@@ -529,12 +528,10 @@ def endCall():
     joinBtn["command"] = joinCall
         
 def volumeUp():
-    subprocess.Popen("echo 'volup' | cec-client RPI -s -d 1", shell = True)
-    print("Volume Up")
+    cec.volume_up()
 
 def volumeDown():
-    subprocess.Popen("echo 'voldown' | cec-client RPI -s -d 1", shell = True)
-    print("Volume Down")
+    cec.volume_down()
     
 # tk buttons
 pad = 10
@@ -554,10 +551,10 @@ joinBtn.grid(row = 1,
              padx = pad,
              pady = pad)
 
-volUpImg = tk.PhotoImage(file = "./images/VolUp.png")
-volDownImg = tk.PhotoImage(file = "./images/VolDown.png")
-settingsImg = tk.PhotoImage(file = "./images/Settings.png")
-logo = tk.PhotoImage(file = "./images/Wide.png").subsample(2, 2)
+volUpImg = tk.PhotoImage(file = "/home/pi/GrammyCam/images/VolUp.png")
+volDownImg = tk.PhotoImage(file = "/home/pi/GrammyCam/images/VolDown.png")
+settingsImg = tk.PhotoImage(file = "/home/pi/GrammyCam/images/Settings.png")
+logo = tk.PhotoImage(file = "/home/pi/GrammyCam/images/Wide.png").subsample(2, 2)
 
 logoPane = tk.Label(tp,
                     image = logo,
