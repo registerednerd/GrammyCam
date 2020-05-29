@@ -21,6 +21,7 @@ print("UI Elements Established")
 
 # Initialize CEC
 cec.init()
+tv = cec.Device(cec.CECDEVICE_TV)
 print("CEC Initialized")
 
 # Rotate Camera
@@ -187,7 +188,7 @@ def openPin():
                     bg = red,
                     fg = "black",
                     font = largeFont,
-                    text = "Cancel")
+                    text = "X")
     cancel.grid(row = 3,
              column = 0,
              sticky = (tk.N, tk.S, tk.E, tk.W))
@@ -309,55 +310,87 @@ def openSettings():
     settingsWindow = tk.Tk()
     settingsWindow.attributes("-fullscreen", True)
     settingsWindow.configure(bg = "black")
+    settingsWindow.columnconfigure(0, weight = 3)
+    settingsWindow.columnconfigure(1, weight = 9)
+    settingsWindow.columnconfigure(2, weight = 4)
+    settingsWindow.rowconfigure((0, 1, 2, 3, 4, 5, 6, 7), weight = 1)
 
+    brightnessLabel = tk.Label(settingsWindow,
+                               bg = "black",
+                               fg = "white",
+                               font = mediumFontBold,
+                               text = "Brightness")
+    brightnessLabel.grid(row = 2,
+                         column = 0)
     brightnessSlider = tk.Scale(settingsWindow,
                                 from_=5,
                                 to = 100,
                                 orient = tk.HORIZONTAL,
                                 fg = blue,
+                                bg = "black",
+                                bd = 0,
+                                highlightthickness = 0,
+                                font = smallFont,
+                                width = 40,
+                                sliderrelief = tk.FLAT,
+                                highlightcolor = blue,
                                 command = changeBrightness)
-    brightnessSlider.pack()
     brightnessSlider.set(Backlight().brightness)
+    brightnessSlider.grid(row = 2,
+                          column = 1,
+                          padx = 10,
+                          sticky = "NSEW")
     
-    powerFrame = tk.Frame(settingsWindow,
-                          bg = "black")
-    powerFrame.pack(side = tk.RIGHT,
-                    fill = tk.BOTH)
-    updateBtn = tk.Button(powerFrame,
+    backBtn = tk.Button(settingsWindow,
+                        text = " Back",
+                        bg = green,
+                        relief = tk.FLAT,
+                        font = mediumFont,
+                        command = back)
+    backBtn.grid(row = 0,
+                 column = 0,
+                 sticky = "NW")
+    
+    updateBtn = tk.Button(settingsWindow,
                           text = "Update",
                           bg = purple,
                           relief = tk.FLAT,
                           font = largeFont,
                           command = update)
-    updateBtn.pack(side = tk.TOP,
-                   fill = tk.BOTH)
-    rebootBtn = tk.Button(powerFrame,
+    updateBtn.grid(row = 0,
+                   column = 2,
+                   rowspan = 2,
+                   sticky = "NSEW")
+    rebootBtn = tk.Button(settingsWindow,
                           text = "Reboot",
                           bg = red,
                           relief = tk.FLAT,
                           font = largeFont,
                           command = reboot)
-    rebootBtn.pack(side = tk.BOTTOM,
-                   fill = tk.BOTH,
-                   expand = 1)
-    shutDownBtn = tk.Button(powerFrame,
+    rebootBtn.grid(row = 6,
+                   column = 2,
+                   rowspan = 2,
+                   sticky = "NSEW")
+    shutDownBtn = tk.Button(settingsWindow,
                             text = "Shut Down",
                             bg = red,
                             relief = tk.FLAT,
                             font = largeFont,
                             command = shutDown)
-    shutDownBtn.pack(side = tk.BOTTOM,
-                     fill = tk.BOTH,
-                     expand = 1)
-    quitBtn = tk.Button(powerFrame,
+    shutDownBtn.grid(row = 4,
+                     column = 2,
+                     rowspan = 2,
+                     sticky = "NSEW")
+    quitBtn = tk.Button(settingsWindow,
                         text = "Quit",
                         bg = red,
                         relief = tk.FLAT,
                         font = largeFont,
                         command = close)
-    quitBtn.pack(side = tk.BOTTOM,
-                 fill = tk.BOTH,
-                 expand = 1)
+    quitBtn.grid(row = 2,
+                 column = 2,
+                 rowspan = 2,
+                 sticky = "NSEW")
     
     settingsWindow.mainloop()
 
@@ -372,9 +405,10 @@ def update():
 def close():
     settingsWindow.destroy()
     tp.destroy()
+    sys.exit()
 
 def back():
-    settingsWindow.desroy()
+    settingsWindow.destroy()
     
 def shutDown():
     subprocess.Popen("sudo poweroff", shell = True)
@@ -389,6 +423,9 @@ tp = tk.Tk()
 tp.attributes("-fullscreen", True)
 tp.configure(bg = "black")
 tp.title = "Main TP"
+tp.columnconfigure(0, weight = 14)
+tp.columnconfigure(1, weight = 3)
+tp.rowconfigure((0, 1, 2), weight = 3)
 
 # Button Functions
 def joinCall():
@@ -431,15 +468,14 @@ joinBtn = tk.Button(tp,
                     relief = tk.FLAT,
                     font = largeFont,
                     command = joinCall)
-joinBtn.pack(side = tk.LEFT,
-             fill = tk.BOTH,
-             expand = 1,
+joinBtn.grid(row = 1,
+             column = 0,
+             rowspan = 2,
+             sticky = "NSEW",
              padx = pad,
              pady = pad)
-sideFrame = tk.Frame(tp,bg = "black")
-sideFrame.pack(side = tk.RIGHT,
-               fill = tk.BOTH)
-volUpBtn = tk.Button(sideFrame,
+
+volUpBtn = tk.Button(tp,
                      text = "Volume +",
                      bg = blue,
                      activebackground = blue,
@@ -448,12 +484,13 @@ volUpBtn = tk.Button(sideFrame,
                      relief = tk.FLAT,
                      font = largeFont,
                      command = volumeUp)
-volUpBtn.pack(side = tk.TOP,
-              fill = tk.BOTH,
-              expand = 1,
+volUpBtn.grid(row = 0,
+              column = 1,
+              sticky = "NSEW",
               padx = pad,
               pady = pad)
-volDownBtn = tk.Button(sideFrame,
+
+volDownBtn = tk.Button(tp,
                        text = "Volume -",
                        bg = blue,
                        activebackground = blue,
@@ -462,12 +499,13 @@ volDownBtn = tk.Button(sideFrame,
                        relief = tk.FLAT,
                        font = largeFont,
                        command = volumeDown)
-volDownBtn.pack(side = tk.TOP,
-                fill = tk.BOTH,
-                expand = 1,
+volDownBtn.grid(row = 1,
+                column = 1,
+                sticky = "NSEW",
                 padx = pad,
                 pady = pad)
-settingsBtn = tk.Button(sideFrame,
+
+settingsBtn = tk.Button(tp,
                         text = "Settings",
                         bg = purple,
                         activebackground = purple,
@@ -476,8 +514,9 @@ settingsBtn = tk.Button(sideFrame,
                         relief = tk.FLAT,
                         font = largeFont,
                         command = openPin)
-settingsBtn.pack(side = tk.TOP,
-                 fill = tk.BOTH,
+settingsBtn.grid(row = 2,
+                 column = 1,
+                 sticky = "NSEW",
                  padx = pad,
                  pady = pad)
 
